@@ -1,8 +1,12 @@
+package com.dvede.weather
+
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import kotlinx.cli.vararg
 import org.json.JSONObject
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 import java.io.BufferedReader
 import java.io.FileNotFoundException
 import java.io.InputStreamReader
@@ -16,7 +20,11 @@ private const val BLUE = "\u001b[0m" // Text Reset
 private const val RESET = "\u001b[0;34m" // BLUE
 private const val RED_BOLD = "\u001b[1;31m" // RED
 
+@SpringBootApplication
+open class Main
+
 fun main(args: Array<String>) {
+    runApplication<Main>(*args)
     val parser = ArgParser("WeatherApp")
     val cites by parser.argument(
         type = ArgType.String,
@@ -54,7 +62,6 @@ fun main(args: Array<String>) {
 }
 
 private fun generalInfo(obj: JSONObject, str: String) = buildString {
-
     append("${RED_BOLD}${obj.getString("name")}$RESET\n")
     append("$RESET---------Общая информация---------$BLUE\n")
     append("Широта: ${obj.getJSONObject("coord").getDouble("lon")}\n")
