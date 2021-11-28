@@ -5,27 +5,29 @@ import java.net.URL
 
 import kotlin.math.floor
 
+private val units = listOf("imperial","metric","standard")
+
 fun main(args: Array<String>) {
-    when (args.size) {
-        0 -> {
-            println("Нет аргументов!")
-            return
-        }
-        1 -> {
-            val urlAddress = "https://api.openweathermap.org/data/2.5/weather?q=${args[0]}" +
-                    "&appid=0f21bd02afdc24c032045afd167ff588&units=metric&lang=ru"
-            val output = getWeatherInfo(urlAddress)
-            if (output.isNotBlank()) {
-                val obj = JSONObject(output)
-                println(generalInfo(obj))
-                println(temperatureInfo(obj))
-                println(windInfo(obj))
-            }
-        }
-        else -> {
-            println("Слишком много аргументов!")
-            return
-        }
+    if (args.isEmpty()) {
+        println("Нет аргументов!")
+        return
+    }
+    else if (args.size > 2) {
+        println("Слишком много аргументов!")
+        return
+    }
+    var unit = "standard"
+    if (args.size == 2 && units.contains(args[1].lowercase())) {
+        unit = args[1]
+    }
+    val urlAddress = "https://api.openweathermap.org/data/2.5/weather?q=${args[0]}" +
+            "&appid=0f21bd02afdc24c032045afd167ff588&units=${unit}&lang=ru"
+    val output = getWeatherInfo(urlAddress)
+    if (output.isNotBlank()) {
+        val obj = JSONObject(output)
+        println(generalInfo(obj))
+        println(temperatureInfo(obj))
+        println(windInfo(obj))
     }
 }
 
