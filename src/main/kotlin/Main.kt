@@ -47,9 +47,9 @@ fun main(args: Array<String>) {
         description = "Change to custom api key").default("")
     parser.parse(args)
 
-    try {
-        for (city in cites) {
-            if (apiKey.isEmpty()) apiKey = API_KEY
+    for (city in cites) {
+        if (apiKey.isEmpty()) apiKey = API_KEY
+        try {
             val output = getWeatherInfo(city, unit.name, apiKey)
             val obj = JSONObject(output)
             println(generalInfo(obj, unit.str))
@@ -57,12 +57,12 @@ fun main(args: Array<String>) {
             if (wind) print(windInfo(obj))
             println("$RESET----------------------------------$BLUE\n")
         }
-    }
-    catch (e: FileNotFoundException) {
-        println("${RED_BOLD}Такой город не найден")
-    }
-    catch (e: UnknownHostException) {
-        println("${RED_BOLD}Нет подключения к интернету")
+        catch (e: FileNotFoundException) {
+            println("${RED_BOLD}Такой город не найден: $city\n")
+        }
+        catch (e: UnknownHostException) {
+            println("${RED_BOLD}Нет подключения к интернету\n")
+        }
     }
 }
 
