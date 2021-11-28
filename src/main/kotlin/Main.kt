@@ -32,20 +32,25 @@ fun main(args: Array<String>) {
     val unit by parser.option(
         type = ArgType.Choice<Units>(),
         shortName = "u",
-        description = "Result measurement unit").default(Units.METRIC)
+        description = "Select result measurement unit").default(Units.METRIC)
     val wind by parser.option(
         type = ArgType.Boolean,
         shortName = "w",
-        description = "Info about wind").default(false)
+        description = "Get info about wind").default(false)
     val temperature by parser.option(
         type = ArgType.Boolean,
         shortName = "t",
-        description = "Additional temperature info").default(false)
+        description = "Get additional temperature info").default(false)
+    var apiKey by parser.option(
+        type = ArgType.String,
+        shortName = "a",
+        description = "Change to custom api key").default("")
     parser.parse(args)
 
     try {
         for (city in cites) {
-            val output = getWeatherInfo(city, unit.name )
+            if (apiKey.isEmpty()) apiKey = API_KEY
+            val output = getWeatherInfo(city, unit.name, apiKey)
             val obj = JSONObject(output)
             println(generalInfo(obj, unit.str))
             if (temperature) print(temperatureInfo(obj, unit.str))
@@ -92,9 +97,9 @@ private fun getWindDirection(degrees: Double): String {
     return arr[(section % 8).toInt()]
 }
 
-private fun getWeatherInfo(city: String, unit: String): String {
+private fun getWeatherInfo(city: String, unit: String, apiKey: String): String {
     val urlAddress = "https://api.openweathermap.org/data/2.5/weather?q=$city" +
-            "&appid=$API_KEY&units=$unit&lang=ru"
+            "&appid=$apiKey&units=$unit&lang=ru"
     val result: String
     val urlConnection = URL(urlAddress).openConnection()
     val stream = InputStreamReader(urlConnection.getInputStream())
