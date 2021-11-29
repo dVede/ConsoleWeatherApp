@@ -20,7 +20,7 @@ private const val RED_BOLD = "\u001b[1;31m" // RED
 
 private val scanner = Scanner(System.`in`, Charsets.UTF_8)
 
-class WeatherInfo : CliktCommand(printHelpOnEmptyArgs = true) {
+class WeatherInfo : CliktCommand() {
     private val wind: Boolean by option("-w", "--wind", help = "Get info about wind").flag()
     private val temperature: Boolean by option("-t", "--temp", help = "Get additional temperature info").flag()
     private val apiKey: String by option("-a", "--api", help = "Change to custom API-key")
