@@ -58,10 +58,10 @@ fun main(args: Array<String>) {
             println("$RESET----------------------------------$BLUE\n")
         }
         catch (e: FileNotFoundException) {
-            println("${RED_BOLD}Такой город не найден: $city\n")
+            println("${RED_BOLD}Такой город не найден: $city$RESET\n")
         }
         catch (e: UnknownHostException) {
-            println("${RED_BOLD}Нет подключения к интернету\n")
+            println("${RED_BOLD}Нет подключения к интернету$RESET\n")
         }
     }
 }
