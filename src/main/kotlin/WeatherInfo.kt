@@ -35,7 +35,7 @@ class WeatherInfo : CliktCommand() {
             for (city in cities) {
                 try {
                     val cityFixed = city.trimStart().trimEnd()
-                    val output = getWeatherInfo(cityFixed, units.name, apiKey)
+                    val output = getWeatherInfo(cityFixed, units, apiKey)
                     val obj = JSONObject(output)
                     println(generalInfo(obj, units.str))
                     if (temperature) print(temperatureInfo(obj, units.str))
@@ -53,7 +53,7 @@ class WeatherInfo : CliktCommand() {
     }
 
 }
-private fun generalInfo(obj: JSONObject, str: String) = buildString {
+fun generalInfo(obj: JSONObject, str: String) = buildString {
     append("${RED_BOLD}${obj.getString("name")}$RESET\n")
     append("$RESET---------Общая информация---------$BLUE\n")
     append("Широта: ${obj.getJSONObject("coord").getDouble("lon")}\n")
@@ -62,7 +62,7 @@ private fun generalInfo(obj: JSONObject, str: String) = buildString {
     append("Погода: ${obj.getJSONArray("weather").getJSONObject(0).getString("description")}")
 }
 
-private fun temperatureInfo(obj: JSONObject, str: String) = buildString {
+fun temperatureInfo(obj: JSONObject, str: String) = buildString {
     append("$RESET-----Информация о температуре-----$BLUE\n")
     append("Ощущается: ${obj.getJSONObject("main").getDouble("feels_like")} $str\n")
     append("Минимальная: ${obj.getJSONObject("main").getDouble("temp_min")} $str\n")
@@ -71,22 +71,22 @@ private fun temperatureInfo(obj: JSONObject, str: String) = buildString {
     append("Влажность: ${obj.getJSONObject("main").getDouble("humidity")}%\n")
 }
 
-private fun windInfo(obj: JSONObject) = buildString {
+fun windInfo(obj: JSONObject) = buildString {
     append("$RESET--------Информация о ветре--------$BLUE\n")
     append("Скорость ветра: ${obj.getJSONObject("wind").getDouble("speed")} м/c\n")
     append("Направление ветра: ${getWindDirection(obj.getJSONObject("wind").getDouble("deg"))}\n")
 }
 
-private fun getWindDirection(degrees: Double): String {
+fun getWindDirection(degrees: Double): String {
     val section = floor(degrees / 45)
     val arr = listOf("Северный","Северо-Западный","Западный","Юго-Западный",
         "Южный","Юго-Восточный", "Восточный", "Северо-Восточный")
     return arr[(section % 8).toInt()]
 }
 
-private fun getWeatherInfo(city: String, unit: String, apiKey: String): String {
+fun getWeatherInfo(city: String, unit: UnitsTemp, apiKey: String): String {
     val urlAddress = "https://api.openweathermap.org/data/2.5/weather?q=$city" +
-            "&appid=$apiKey&units=$unit&lang=ru"
+            "&appid=$apiKey&units=${unit.name}&lang=ru"
     val result: String
     val urlConnection = URL(urlAddress).openConnection()
     val stream = InputStreamReader(urlConnection.getInputStream())
