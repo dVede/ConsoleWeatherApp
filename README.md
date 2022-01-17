@@ -1,5 +1,8 @@
 # ConsoleWeatherApp
-[![WeatherApp](https://github.com/dVede/ConsoleWeatherApp/actions/workflows/weather.yml/badge.svg)](https://github.com/dVede/ConsoleWeatherApp/actions/workflows/weather.yml)
+
+| Master        | Develop       |
+|:-------------:|:-------------:|
+| ![Build status](https://github.com/dVede/ConsoleWeatherApp/actions/workflows/weather.yml/badge.svg?branch=master)| ![Build status](https://github.com/dVede/ConsoleWeatherApp/actions/workflows/weather.yml/badge.svg?branch=develop) |
 ##  Описание
 Данный сервис позволяет получить текущее состояние погоды в выбранном городе.
 ## Использование
